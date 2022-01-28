@@ -1,0 +1,8 @@
+.Menu {
+	display: flex;
+justify-content: flex-start;
+align-items: center;
+flex-direction: column;
+/* margin-top: 10px; */
+padding-top: 50px;
+}
