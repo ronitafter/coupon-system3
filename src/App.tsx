@@ -1,12 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Footer from './Components/siteArea/Footer/Footer';
-import Main from './Components/siteArea/Main/Main';
-import Menu from './Components/siteArea/Menu/Menu';
-import Header from './Components/siteArea/Header/Header';
-import Home from './Components/siteArea/Home/Home';
-import Nav from './Components/siteArea/NavArea/Nav';
+import Footer from './Components/layout/Footer/Footer';
+import Main from './Components/layout/Main/Main';
+import Menu from './Components/layout/Menu/Menu';
+import Header from './Components/layout/Header/Header';
+import Home from './Components/layout/Home/Home';
+import Nav from './Components/layout/NavArea/Nav';
 
 
 function App() {

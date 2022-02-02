@@ -1,6 +1,6 @@
 import "./Footer.css";
 
-function Footer(): JSX.Element {
+function Footer(){
     return (
         <div className="Footer">
             <p>&copy; R.A </p>

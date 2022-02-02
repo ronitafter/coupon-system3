@@ -1,6 +1,6 @@
 import "./Admin.css";
 
-function Admin(): JSX.Element {
+function Admin() {
     return (
         <div className="Admin">
 			
