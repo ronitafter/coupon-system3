@@ -1,5 +1,5 @@
 
-import CustomLink from "../../CustomLink/CustomLink";
+import CustomLink from "../../../CustomLink/CustomLink";
 import "./Nav.css";
 
 function Nav(): JSX.Element {

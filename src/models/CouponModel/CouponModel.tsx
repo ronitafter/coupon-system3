@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 
 class CouponModel {
     public id?: number;
@@ -11,6 +12,7 @@ class CouponModel {
     public endDate?: Date;
     public type?: string;
     public image?: string;
+   name: ReactNode;
 }
 
 export default CouponModel;
