@@ -1,6 +1,6 @@
 import "./Customer.css";
 
-function Customer(): JSX.Element {
+function getCouponsByCategory() {
     return (
         <div className="Customer">
 			
@@ -8,4 +8,4 @@ function Customer(): JSX.Element {
     );
 }
 
-export default Customer;
+export default getCouponsByCategory;

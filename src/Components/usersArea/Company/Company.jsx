@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom";
 import "./Company.css";
 
-function Company(): JSX.Element {
+function Company(){
     return (
         <div className="Company">
-			
+
         </div>
     );
 }

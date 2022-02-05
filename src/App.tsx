@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import RoutingArea from './Components/routingArea/routingArea';
+import RoutingArea from './routingArea/routingArea';
 import Footer from './Components/layout/Footer/Footer';
 import Main from './Components/layout/Main/Main';
 import Menu from './Components/layout/Menu/Menu';
