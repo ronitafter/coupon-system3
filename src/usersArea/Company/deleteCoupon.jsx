@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import "./Company.css";
 
-function Company(){
+function deleteCoupon(){
     return (
-        <div className="Company">
+        <div className="deleteCoupon">
 
         </div>
     );
 }
 
-export default Company;
+export default deleteCoupon;

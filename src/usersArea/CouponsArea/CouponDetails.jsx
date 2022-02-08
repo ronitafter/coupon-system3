@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import CouponModel from "../../../models/CouponModel/CouponModel";
-import globals from "../../services/Globals";
+import CouponModel from "../../models/CouponModel/CouponModel";
+import globals from "../../Components/services/Globals";
 
 function CouponDetails(props) {
 

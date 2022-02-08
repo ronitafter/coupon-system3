@@ -1,8 +1,8 @@
 // import React from 'react';
 
-import CouponModel from "../../../models/CouponModel/CouponModel";
+import CouponModel from "../../models/CouponModel/CouponModel";
 import { Component } from "react";
-import CouponCard from "../../Cards/CouponCard";
+import CouponCard from "../../Components/Cards/CouponCard";
 import axios from "axios";
 
 

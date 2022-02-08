@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../Components/layout/Home/Home";
 import PageNotFound from "../Components/layout/pageNotFxound/PageNotFound";
-import Login from "../Components/Login/Login";
-import AddCompany from "../Components/usersArea/Admin/AddCompany";
-import AddCustomer from "../Components/usersArea/Admin/AddCustomer";
-import Admin from "../Components/usersArea/Admin/Admin";
-import GetOneCompany from "../Components/usersArea/Admin/GetOneCompany";
-import GetOneCustomer from "../Components/usersArea/Admin/GetOneCustomer";
-import UpdateCompany from "../Components/usersArea/Admin/UpdateCompany";
-import UpdateCustomer from "../Components/usersArea/Admin/UpdateCustomer";
-import CouponsList from "../Components/usersArea/CouponsArea/CouponsList";
-import PurchaseCoupon from "../Components/usersArea/Customer/PurchaseCoupon";
+import Login from "../Login/Login";
+import AddCompany from "../usersArea/Admin/AddCompany";
+import AddCustomer from "../usersArea/Admin/AddCustomer";
+import Admin from "../usersArea/Admin/updateCompany";
+import GetOneCompany from "../usersArea/Admin/GetOneCompany";
+import GetOneCustomer from "../usersArea/Admin/GetOneCustomer";
+import UpdateCompany from "../usersArea/Admin/UpdateCompany";
+import UpdateCustomer from "../usersArea/Admin/UpdateCustomer";
+import CouponsList from "../usersArea/CouponsArea/CouponsList";
+import PurchaseCoupon from "../usersArea/Customer/PurchaseCoupon";
 import "./routingArea.css";
 
 function RoutingArea() {
