@@ -13,31 +13,28 @@ import axios from "axios";
 // export default CouponsList;
 
 
-interface CouponsListState {
-  coupons: CouponModel[];
-}
 
-class CouponsList extends Component<{}, CouponsListState> {
-  public constructor(props: {}) {
+class CouponsList extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       coupons: [],
     };
   }
 
-  public async componentDidMount() {
+  async componentDidMount() {
     try {
-      const response = await axios.get<CouponModel[]>(
+      const response = await axios.get(
         "https//:coupons...."
       );
       this.setState({ coupons: response.data });
-              }
-        catch(err : unknown) {
-const u = err as any;
-alert(u.message);
-}
-}
-  public render(): JSX.Element {
+    }
+    catch (err) {
+      const u = err;
+      alert(u.message);
+    }
+  }
+  render() {
     return (
       <div className="CouponsList">
         <h2>Kitten List</h2>

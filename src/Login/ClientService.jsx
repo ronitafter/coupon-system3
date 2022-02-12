@@ -1,9 +1,9 @@
 import axios from 'axios';
-import authHeader from './auth-header';
-const API_URL = 'http://localhost:8080/api/test/';
+import authHeader from './authHeader';
+const API_URL = 'http://localhost:3000/login/ClientService/';
 
 
-//define a service for accessing data in user.service.js:
+//define a service for accessing data in the clientservice:
 class ClientService {
    getPublicContent() {
       return axios.get(API_URL + 'all');

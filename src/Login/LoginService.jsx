@@ -1,11 +1,10 @@
 import React from 'react';
 import axios from "axios";
 //wrong url
-const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = "http://localhost:3000/login/LoginService/";
 
 //Authentication/Login service:
-// The service uses Axios for HTTP requests and Local Storage for user information & JWT = JSON Web Token.
-// It provides following important methods:
+//uses Axios for HTTP requests and Local Storage for client information & JWT = JSON Web Token.
 
 // SHOULD BE A FUNCTION
 class LoginService {
