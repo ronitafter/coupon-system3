@@ -1,6 +1,6 @@
 
 
-import React, { useRef, useState } from "react";
+import React, {useState } from "react";
 import apiClient from "./http-common";
 
 function deleteCompany() {
@@ -28,7 +28,7 @@ function deleteCompany() {
     const id = delete_id.current.value;
     if (id) {
       try {
-        const res = await apiClient.delete(`/tutorials/${id}`);
+        const res = await apiClient.delete(`/companies/${id}`);
         const result = {
           status: res.status + "-" + res.statusText,
           headers: res.headers,
@@ -46,7 +46,7 @@ function deleteCompany() {
   return (
     <div id="app" className="container">
       <div className="card">
-        <div className="card-header">React Axios DELETE - BezKoder.com</div>
+        <div className="card-header">testing....</div>
         <div className="card-body">
           <div className="input-group input-group-sm">
             <button className="btn btn-sm btn-danger" onClick={deleteAllData}>Delete All</button>

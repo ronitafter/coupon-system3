@@ -1,50 +1,54 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import apiClient from "../../http-common/apiClient ";
+
+
+
+
 function AddCustomer() {
-  const post_title = useRef(null);
-  const post_description = useRef(null);
-  const [postResult, setPostResult] = useState(null);
-  const fortmatResponse = (res) => {
-    return JSON.stringify(res, null, 2);
-  };
-  async function postData() {
-    const postData = {
-      title: post_title.current.value,
-      description: post_description.current.value,
-    };
+  const [title, setTitle] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [result, setResult] = useState(null);
+  const [email, setEmail] = useState(null);
+
+  async function addCustomer() {
     try {
-      const res = await apiClient.post("/customers", postData, {
+      console.log('Sending customer details to server');
+      const res = await apiClient.post("/PATH-TO-ADD-CUSTOMER-ON-SERVER",
+       { title: title,
+         description: description ,
+         email
+        },
+        {
         headers: {
           "x-access-token": "token-value",
         },
       });
-      const result = {
-        status: res.status + "-" + res.statusText,
-        headers: res.headers,
-        data: res.data,
-      };
-      setPostResult(fortmatResponse(result));
+      console.log('Customer details sent to server');
+      clearPostOutput();
     } catch (err) {
-      setPostResult(fortmatResponse(err.response?.data || err));
+      //setResult(fortmatResponse(err.response?.data || err));
     }
   }
   const clearPostOutput = () => {
-    setPostResult(null);
+    setTitle(null);
+    setDescription(null);
   };
   return (
     <div id="app" className="container">
       <div className="card">
-        <div className="card-header">New Company - company name?</div>
+        <div className="card-header">New Customer</div>
         <div className="card-body">
           <div className="form-group">
-            <input type="text" className="form-control" ref={post_title} placeholder="Title" />
+            <input type="text" className="form-control" value={title} placeholder="Title" />
           </div>
           <div className="form-group">
-            <input type="text" className="form-control" ref={post_description} placeholder="Description" />
+            <input type="text" className="form-control" value={email} placeholder="Email" />
           </div>
-          <button className="btn btn-sm btn-primary" onClick={postData}>Post Data</button>
+          <div className="form-group">
+            <input type="text" className="form-control" value={description} placeholder="Description" />
+          </div>
+          <button className="btn btn-sm btn-primary" onClick={addCustomer}>Post Data</button>
           <button className="btn btn-sm btn-warning ml-2" onClick={clearPostOutput}>Clear</button>
-          {postResult && <div className="alert alert-secondary mt-2" role="alert"><pre>{postResult}</pre></div>}
         </div>
       </div>
     </div>

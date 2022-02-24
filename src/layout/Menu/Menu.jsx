@@ -30,8 +30,7 @@ function Menu() {
             <Link to="/">Delete Customer</Link>
             <Link to="/deleteCustomer">Delete Customer</Link>
             <Link to="/">Show All Customers</Link>
-            <Link to="/get All Customers">Show All Customers</Link>
-
+            <Link to="/getAllCustomers">Show All Customers</Link>
             <Link to="/">Find Customer</Link>
             <Link to="/GetOneCustomer">Find Customer</Link>
 
@@ -53,7 +52,6 @@ function Menu() {
             <Link to="/">Categories</Link>
             <Link to="/getCouponsByCategory">Categories</Link>
             <Link to="/">Delete Coupons</Link>
-            <Link to="/deleteCoupon">Delete Coupons</Link>
 
 
             {/* /Customer/User */}

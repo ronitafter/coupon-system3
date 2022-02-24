@@ -3,14 +3,17 @@ import logo from './logo.svg';
 import './App.css';
 
 import RoutingArea from './routingArea/routingArea';
-import Footer from './Components/layout/Footer/Footer';
-import Main from './Components/layout/Main/Main';
-import Menu from './Components/layout/Menu/Menu';
-import Header from './Components/layout/Header/Header';
-import Home from './Components/layout/Home/Home';
-import Nav from './Components/layout/NavArea/Nav';
+import Footer from './layout/Footer/Footer';
+import Main from './layout/Main/Main';
+import Menu from './layout/Menu/Menu';
+import Header from './layout/Header/Header';
+import Home from './layout/Home/Home';
+import Nav from './layout/NavArea/Nav';
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 
 function App() {

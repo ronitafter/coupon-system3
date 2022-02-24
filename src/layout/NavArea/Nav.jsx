@@ -1,15 +1,15 @@
 
-import CustomLink from "../../../CustomLink/CustomLink";
+import { Link } from "react-router-dom";
 import "./Nav.css";
 
-function Nav(): JSX.Element {
+function Nav() {
     return (
         <div className="Nav">
             <nav>
-                <CustomLink to="/home" >Home</CustomLink>
-                <CustomLink to="/cats" >Cats</CustomLink>
-                <CustomLink to="/about" >About</CustomLink>
-                <CustomLink to="/donate" >Donate</CustomLink>
+                <Link to="/home" >Home</Link>
+                <Link to="/login" >login</Link>
+                <Link to="/coupons" >coupons</Link>
+                <Link to="/?" >?</Link>
             </nav>
         </div>
     );
