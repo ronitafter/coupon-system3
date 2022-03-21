@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import com.ronit.utils.TokenManager;
 
 //@WebFilter
-@WebFilter({"/admin/customer/*", "/admin/company/*"})
+@WebFilter({"/admin/customer/*", "/admin/company/*", "/admin/companies/*", "/company/company/*"})
 public class AuthorizationFilter implements Filter{
 	
 	@Autowired

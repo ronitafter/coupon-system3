@@ -8,6 +8,7 @@ import com.ronit.test.AdminControllerTester;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,32 +32,25 @@ import com.ronit.exceptions.InvalidOperationException;
 import com.ronit.job.RemoveExpiredTokens;
 import com.ronit.services.AdminService;
 import com.ronit.services.ClientService;
+import com.ronit.services.CompanyService;
 import com.ronit.utils.LoginManager;
 import com.ronit.utils.TokenManager;
 
 @RestController
 @RequestMapping("/admin")
-//@RequiredArgsConstructor
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController extends ClientController {
 
-	
-//	@Autowired
-//	AdminControllerTester adminControllerTester;
-	
+
 	@Autowired
 	private LoginManager loginManager;
 //	@Autowired
-	private AdminService adminService = null;
+	private AdminService adminService;
 //	@Autowired
 //	private ResponseDto ResponseDto;
-
-	private RemoveExpiredTokens removeExpiredTokens;
-	
+	private RemoveExpiredTokens removeExpiredTokens;	
 	@Autowired
-	private TokenManager tokenManager;
-	
-
+	private TokenManager tokenManager;	
 	@Autowired
 	public AdminController(AdminService adminService) {
 		this.adminService = adminService;
@@ -65,32 +59,23 @@ public class AdminController extends ClientController {
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
-//	public ResponseEntity<String> login(@RequestBody String email)
-	//tokens...
 			throws AuthorizationException, CouponSystemException {
-		// return adminService.login(loggedin.getEmail(), loggedin.getPassword());
-//		return loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);
 		try {
-			ClientService clientService = loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);		//1- try to login
-//			loginRequest.getClientType();
+			ClientService clientService = loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);	
+			adminService = (AdminService) clientService;
+			//			loginRequest.getClientType();
 //			adminService = (AdminService) loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(),
 //					ClientType.ADMINISTRATOR);
 //			String token = removeExpiredTokens.getNewToken();
 			String token = tokenManager.generateToken(ClientType.ADMINISTRATOR);
 			return new ResponseEntity<String>(token, HttpStatus.OK);
-		} catch (CouponSystemException e) {
-			
+		} catch (CouponSystemException e) {		
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-
-		
 
 		} catch (Exception e) {
 			// else -> return failure string "Fail to login"
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		// if login succeed -> return TOKEN
-		// generate token here!
-//		return tokenManager.generateToken(type);
 
 	}
 
@@ -113,8 +98,7 @@ public class AdminController extends ClientController {
 		loginManager.logout(token);
 	}
 
-//
-//	}
+
 // ************************************ COMPANY *****************************************************************
 
 // ___________________________________ Add Company _____________________________________________________________
@@ -148,18 +132,6 @@ public class AdminController extends ClientController {
 		}
 
 	}
-//		return new ResponseEntity<>(new ResponseDto(true. adminService
-//				.addCompany(company).toString(), (HttpStatus.CREATED));
-//		
-//		try {
-//			adminService.addCompany(company);
-//			return new ResponseEntity<>(HttpStatus.CREATED);
-//
-//		} catch (CouponSystemException e) {
-//			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//
-//		}
-
 // ___________________________________ Update Company ___________________________________________________________
 	@PutMapping("/company")
 	public ResponseEntity<?> updateCompany(//@RequestHeader("authorization") String token,
@@ -174,8 +146,7 @@ public class AdminController extends ClientController {
 
 // ___________________________________ Delete Company ____________________________________________________________
 	@DeleteMapping("/company/{id}")
-	public ResponseEntity<?> deleteCompany(//@RequestHeader("authorization") String token,
-										   @PathVariable("id") int id)
+	public ResponseEntity<?> deleteCompany(@PathVariable("id") int id)
 			throws CouponSystemException {
 
 		try {
@@ -189,21 +160,17 @@ public class AdminController extends ClientController {
 
 // ___________________________________ Get All Companies _________________________________________________________
 	@GetMapping("/companies")
-	public List<Company> getAllCompanies(){//@RequestHeader("authorization") String token) {
+	public List<Company> getAllCompanies(){
 		return adminService.getAllCompanies();
 //			return new CustomerList(storeService.getAllCustomers());
 
 	}
 
 // ___________________________________ Get One Company ___________________________________________________________
-
-	// get one company
 	@GetMapping("/company/{companyId}")
-	public ResponseEntity<?> getCompanyById(//@RequestHeader("authorization") String token,
-											@PathVariable int companyId) {
+	public ResponseEntity<?> getCompanyById(@PathVariable int companyId) {
 		try {
 			Company company = adminService.getOneCompany(companyId);
-			// Company company = adminService.getCompanyById(companyId);
 			return new ResponseEntity<>(company, HttpStatus.OK);
 		} catch (CouponSystemException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -233,7 +200,7 @@ return null;
 }
 	}
 
-	// public Long addCustomer(@RequestBody Customer customer) {
+// public Long addCustomer(@RequestBody Customer customer) {
 //	public ResponseEntity<?> addCustomer(//@RequestHeader("authorization") String token,
 //										 @RequestBody Customer customer) {
 //		try {
@@ -255,7 +222,7 @@ return null;
 	}
 
 // ___________________________________ Delete Customer ____________________________________________________________
-	@DeleteMapping("/customers/{customerId}")
+	@DeleteMapping("/customer/{customerId}")
 	public ResponseEntity<?> deleteCustomer(//@RequestHeader("authorization") String token,
 			@PathVariable int customerId) {
 		try {
@@ -294,9 +261,6 @@ return null;
 			throw new AuthorizationException("user not authorized");
 		}
 		
-		
-	
-
 // ___________________________________ Get One Customer ___________________________________________________________
 	@GetMapping("/customer/{id}")
 	//	public ResponseEntity<?> getOneCustomer(@RequestHeader("authorization") String token,

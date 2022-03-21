@@ -19,9 +19,9 @@ import com.ronit.exceptions.CouponSystemException;
 public class AdminService extends ClientService {
 
 	@Value("${admin.email}")
-	private  String email1 = "";
+	private  String email1 = "admin@admin.com";
 	@Value("${admin.password}")
-	private  String password1 = "";
+	private  String password1 = "admin";
 
 	public boolean login(String email, String passwaord) {
 		System.out.println("test5...");
