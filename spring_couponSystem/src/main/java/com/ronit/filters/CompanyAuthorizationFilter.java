@@ -17,8 +17,12 @@ import org.springframework.http.HttpStatus;
 import com.ronit.utils.TokenManager;
 
 //@WebFilter
-@WebFilter({"/admin/customer/*", "/admin/company/*", "/admin/companies/*", "/company/company/*"})
-public class AuthorizationFilter implements Filter{
+@WebFilter({"/company/coupon/*", "/company/coupon/{id}/*", 
+	"/company/coupon/category/*","/company/coupon/{maxPrice}/*"
+	,"/company/company/*","/company/id/*"
+	
+})
+public class CompanyAuthorizationFilter implements Filter{
 	
 	@Autowired
 	private TokenManager tokenManager;

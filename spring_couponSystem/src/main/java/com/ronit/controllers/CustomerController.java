@@ -108,8 +108,7 @@ public class CustomerController extends ClientController {
 	@PostMapping("/purchase")
 //	@GetMapping("/coupon")
 	//void
-	public  ResponseEntity<?> PurchaseCoupon(//@RequestHeader("authorization") String token,
-											 @RequestBody int couponId) throws AuthorizationException, CouponSystemException {
+	public  ResponseEntity<?> PurchaseCoupon(@RequestBody int couponId) throws AuthorizationException, CouponSystemException {
 		if (true){//tokenManager.isTokenExists(token)) {
 //			List<Customer> customers  = adminService.getAllCustomers();
 				customerservice.PurchaseCoupon(couponId);			
@@ -125,7 +124,7 @@ public class CustomerController extends ClientController {
 		}
 	
 	@GetMapping("/coupon")
-	public List<Coupon> getAllCustomerCoupons()//@RequestHeader("authorization") String token)
+	public List<Coupon> getAllCustomerCoupons()
 			throws CouponSystemException, AuthorizationException {
 		if (true){//tokenManager.isTokenExists(token)) {
 			return customerservice.getAllCustomerCoupons();
@@ -135,27 +134,6 @@ public class CustomerController extends ClientController {
 		}
 
 	}
-	
-	
-//	@GetMapping("/coupon")
-////	@GetMapping("/allCustomerCoupons")
-//	//	public List<Coupon> getAllCustomerCoupons(int customerId) throws CouponSystemException {
-//	public List<Coupon> getAllCustomerCoupons(//@RequestHeader("authorization")String token,
-//											  @RequestBody int customerId) throws CouponSystemException, AuthorizationException {
-//		if (true){//tokenManager.isTokenExists(token)) {
-////			List<Customer> customers  = adminService.getAllCustomers();
-//			return customerservice.getAllCustomerCoupons(customerId);
-////				ResponseDto responsdto = new ResponseDto(true, "getAllCustomerCoupons Coupon");
-////				 new ResponseEntity<>(responsdto, HttpStatus.CREATED);
-////		return adminService.getAllCustomers();
-//			//return new customerList(customers)		
-//		}
-//		throw new AuthorizationException("Purchase not authorized");		
-////			ResponseDto responsdto = new ResponseDto(false, e.getMessage());
-////			return new ResponseEntity<>(responsdto, HttpStatus.BAD_REQUEST);
-////			
-//		}	
-//	
 	@GetMapping("/coupon/category")
 //	@GetMapping("/customerCouponsByCategory")
 	public List<Coupon> getCustomerCoupons(//@RequestHeader("authorization")String token,
