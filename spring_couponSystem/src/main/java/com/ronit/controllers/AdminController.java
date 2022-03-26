@@ -134,15 +134,26 @@ public class AdminController extends ClientController {
 	}
 // ___________________________________ Update Company ___________________________________________________________
 	@PutMapping("/company")
-	public ResponseEntity<?> updateCompany(//@RequestHeader("authorization") String token,
-										   @RequestBody Company company)
+	public ResponseEntity<?> updateCompany(@RequestBody Company company)
 			throws InvalidOperationException, CouponSystemException {
 		adminService.updateCompany(company);
 //		return ResponseEntity.ok(company);
-		ResponseDto responseDto = new ResponseDto(true, "updated Company successfully");
-		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+		return ResponseEntity.ok(company);
+
+//		ResponseDto responseDto = new ResponseDto(true, "updated Company successfully");
+//		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
 
 	}
+	
+// ___________________________________ Update Customer ____________________________________________________________
+	@PutMapping("/customer")
+	public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) throws CouponSystemException {
+		adminService.updateCustomer(customer);
+		return ResponseEntity.ok(customer);
+	}
+	
+	
+	
 
 // ___________________________________ Delete Company ____________________________________________________________
 	@DeleteMapping("/company/{id}")
@@ -213,13 +224,6 @@ return null;
 //		}
 //	}
 
-// ___________________________________ Update Customer ____________________________________________________________
-	@PutMapping("/customer")
-	public ResponseEntity<?> updateCustomer(//@RequestHeader("authorization") String token,
-			@RequestBody Customer customer) throws CouponSystemException {
-		adminService.updateCustomer(customer);
-		return ResponseEntity.ok(customer);
-	}
 
 // ___________________________________ Delete Customer ____________________________________________________________
 	@DeleteMapping("/customer/{customerId}")

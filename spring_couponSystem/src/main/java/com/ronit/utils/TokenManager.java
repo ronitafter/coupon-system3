@@ -24,15 +24,25 @@ public class TokenManager {
 	
 
 //	-------------
-	private Map<String, TokenInfo> tokens2;
+	private Map<String, TokenInfo> tokens;
+	
+	   public boolean isAuthorizedFor(String token, ClientType clientType)  {
+		   TokenInfo tokenInfo = tokens.get(token);
+		   if(tokenInfo == null) {
+			   System.out.println("there is no token");
+			   return false;
+		   }
+		   boolean result = tokenInfo.getClientType().equals(clientType);
+		   return result;
+		   }
 	
 	public TokenManager() {
-		tokens2 = new HashMap<>();
+		tokens = new HashMap<>();
 //		tokens2.put("333", new TokenInfo());
 	}
 	
 	public boolean isTokenExists(String token) {
-		return tokens2.get(token) !=null;
+		return tokens.get(token) !=null;
 //		return false;
 	}
 	
@@ -41,30 +51,33 @@ public class TokenManager {
 //		tokens2.put(info.getToken(), info);
 //		return info.getToken();	
 		String x = Double.toString(Math.random());
-		tokens2.put(x, new TokenInfo());
+		tokens.put(x, info);
+//		tokens.put(x, new TokenInfo());
 		return x;
 
 	}
 	
 	public void removeToken(String token) {
-		tokens2.remove(token);
+		tokens.remove(token);
 	}
-	
-	public void returnExpired() {
-		tokens2.entrySet().removeIf((entry) -> isTokenExpired(entry.getValue().getCreationTime()));
-		
-	}
-//	
-	
 	
 	public void removeExpired() {
-		tokens2.entrySet().removeIf((entry)-> 
-		 new Date(0).after(entry.getValue().getCreationTime()));
-		
+		System.out.println("get all token- before: " + tokens.size());
+		System.out.println("removeExpired has started");
+		tokens.entrySet().removeIf((entry) -> isTokenExpired(entry.getValue().getCreationTime()));
+		System.out.println("get all tokens- after: " + tokens.size());
+	
 	}
+//	
+//	public void removeExpired() {
+//		tokens.entrySet().removeIf((entry)-> 
+//		 new Date(0).after(entry.getValue().getCreationTime()));
+//		
+//	}
 	
 	public boolean isTokenExpired(Date time) {
-		return new Date(0).after(DateUtils.addMinutes(time, 30));
+		System.out.println("isTokenExpired has started");
+		return new Date(System.currentTimeMillis()).after(DateUtils.addMinutes(time, 1));
 //		
 	}
 	

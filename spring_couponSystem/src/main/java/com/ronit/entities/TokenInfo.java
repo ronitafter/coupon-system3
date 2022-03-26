@@ -23,7 +23,7 @@ public class TokenInfo {
 	private ClientType clientType;
 	
 public static TokenInfo generate(ClientType type) {
-	TokenInfo info = TokenInfo.builder().token(UUID.randomUUID().toString()).creationTime(new Date(0)).clientType(type).build();
+	TokenInfo info = TokenInfo.builder().token(UUID.randomUUID().toString()).creationTime(new Date(System.currentTimeMillis())).clientType(type).build();
 	return info;
 	
 	

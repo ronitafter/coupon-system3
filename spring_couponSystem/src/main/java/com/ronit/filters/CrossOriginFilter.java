@@ -17,37 +17,39 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(1)
-public class CrossOriginFilter  implements Filter  {
-	
+public class CrossOriginFilter implements Filter {
 
-	    public CrossOriginFilter() {
-	    }
-
-	    public void destroy() {
-	    }
-
-	    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
-	            throws IOException, ServletException {
-
-	        HttpServletRequest request = (HttpServletRequest) servletRequest;
-
-	        // Authorize (allow) all domains to consume the content
-	        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin","http://localhost:3000");
-	        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST, DELETE");
-	        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers","authorization, Origin, Accept, x-auth-token, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-
-	        HttpServletResponse resp = (HttpServletResponse) servletResponse;
-
-	        // For HTTP OPTIONS verb/method reply with ACCEPTED status code -- per CORS handshake
-	        if (request.getMethod().equals("OPTIONS")) {
-	            return;
-	        }
-
-	        // pass the request along the filter chain
-	        chain.doFilter(request, servletResponse);
-	    }
-
-	    public void init(FilterConfig fConfig) throws ServletException {
-	    }
-
+	public CrossOriginFilter() {
 	}
+
+	public void destroy() {
+	}
+
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
+			throws IOException, ServletException {
+		System.out.println(">>> CrossOriginFilter " + Thread.currentThread().getName() + "  started");
+		HttpServletRequest request = (HttpServletRequest) servletRequest;
+
+		// Authorize (allow) all domains to consume the content
+		((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods",
+				"GET, OPTIONS, HEAD, PUT, POST, DELETE");
+		((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers",
+				"authorization, Origin, Accept, x-auth-token, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+
+		HttpServletResponse resp = (HttpServletResponse) servletResponse;
+
+		// For HTTP OPTIONS verb/method reply with ACCEPTED status code -- per CORS
+		// handshake
+		if (request.getMethod().equals("OPTIONS")) {
+			return;
+		}
+
+		// pass the request along the filter chain
+		chain.doFilter(request, servletResponse);
+	}
+
+	public void init(FilterConfig fConfig) throws ServletException {
+	}
+
+}

@@ -14,14 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import com.ronit.enums.ClientType;
 import com.ronit.utils.TokenManager;
 
-//@WebFilter
-@WebFilter({"/company/coupon/*", "/company/coupon/{id}/*", 
-	"/company/coupon/category/*","/company/coupon/{maxPrice}/*"
-	,"/company/company/*","/company/id/*"
-	
-})
+//@WebFilter({"/company/*"
+//	
+//})
 public class CompanyAuthorizationFilter implements Filter{
 	
 	@Autowired
@@ -30,13 +28,16 @@ public class CompanyAuthorizationFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+	      System.out.println(">>> CompanyAuthorizationFilter " + Thread.currentThread().getName() + "  started");
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-		boolean isAuthorized = tokenManager.isTokenExists(httpServletRequest.getHeader("authorization"));
-//		boolean isAuthorized = true;
+	      String token = httpServletRequest.getHeader("authorization");
+			boolean isAuthorized = tokenManager.isTokenExists(token);
+		      boolean isAuthorizedForComapny = tokenManager.isAuthorizedFor(token, ClientType.COMPANY);
+//		boolean isAuthorized = tokenManager.isTokenExists(httpServletRequest.getHeader("authorization"));
 		String x =httpServletRequest.getHeader("authorization");
 		System.out.println("value of the header " + x);
-		if (isAuthorized) {
+		if (isAuthorized && isAuthorizedForComapny) {
 			chain.doFilter(request, response);
 //			return;
 		}else {
