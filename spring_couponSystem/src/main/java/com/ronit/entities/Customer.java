@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "customers")
 public class Customer {
@@ -27,6 +29,7 @@ public class Customer {
 	private String lastName;
 	private String email;
 	private String password;
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH
 			,CascadeType.PERSIST})
 	@JoinTable(name = "coupons_customers", 

@@ -36,7 +36,6 @@ import com.ronit.utils.TokenManager;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CustomerController extends ClientController {
 	
-
 	@Autowired
 	private CustomerService customerservice;
 	@Autowired
@@ -64,6 +63,7 @@ public class CustomerController extends ClientController {
 			customerservice = (CustomerService) clientService;
 //			String token = removeExpiredTokens.getNewToken();
 			String token = tokenManager.generateToken(ClientType.CUSTOMER);
+
 			return new ResponseEntity<String>(token, HttpStatus.OK);
 		} catch (CouponSystemException e) {
 			
@@ -75,9 +75,7 @@ public class CustomerController extends ClientController {
 			// else -> return failure string "Fail to login"
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		// if login succeed -> return TOKEN
-		// generate token here!
-//		return tokenManager.generateToken(type);
+
 
 	}
 //	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
@@ -145,8 +143,7 @@ public class CustomerController extends ClientController {
 		throw new AuthorizationException("Purchase not authorized");	
 	}
 	@GetMapping("/coupon/{maxPrice}")
-//	@GetMapping("/customerCouponsByPrice")
-	public List<Coupon> getCustomerCouponsByPrice(//@RequestHeader("authorization")String token,
+	public List<Coupon> getCustomerCouponsByPrice(
 												  @RequestParam("customerId") int customerId, @RequestParam("maxPrice") double maxPrice) throws CouponSystemException, AuthorizationException {
 		if (true){//tokenManager.isTokenExists(token)) {
 			return customerservice.getCustomerCouponsByPrice(customerId, maxPrice);
@@ -157,8 +154,7 @@ public class CustomerController extends ClientController {
 	}
 	
 	@GetMapping("/customerDetails")
-	public Customer getAllCustomerDetails(//@RequestHeader("authorization")String token,
-										  int customerId) throws CouponSystemException, AuthorizationException {
+	public Customer getAllCustomerDetails(@PathVariable("id") int customerId) throws CouponSystemException, AuthorizationException {
 		if (true){//tokenManager.isTokenExists(token)) {
 		return customerservice.getAllCustomerDetails(customerId);
 }

@@ -205,7 +205,7 @@ public class CompanyController extends ClientController {
 
 	//@GetMapping("/myCompanyCoupons/{companyId}")
 	@GetMapping("/id")
-	public List<Coupon> getAllCompanyCoupons(@PathVariable Integer companyId)
+	public List<Coupon> getAllCompanyCoupons(@PathVariable int companyId)
 			throws CouponSystemException, AuthorizationException {
 		if (true){//tokenManager.isTokenExists(token)) {
 			return companyService.getMyCompanyCoupons(companyId);

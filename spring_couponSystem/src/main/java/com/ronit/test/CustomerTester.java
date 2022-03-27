@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.ronit.entities.Coupon;
@@ -17,7 +18,8 @@ import com.ronit.services.CompanyService;
 import com.ronit.services.CustomerService;
 import com.ronit.utils.LoginManager;
 
-//@Component
+@Order(3)
+@Component
 public class CustomerTester implements CommandLineRunner {
 
 	int customerID;
@@ -33,7 +35,7 @@ public class CustomerTester implements CommandLineRunner {
 	public void startCustomerTester() {
 		LoginManager loginManager = context.getBean(LoginManager.class);
 		try {
-			CustomerService customerServie = (CustomerService) loginManager.login("customer3@", "customer323",
+			CustomerService customerServie = (CustomerService) loginManager.login("ggg@", "ggg123",
 					ClientType.CUSTOMER);
 			System.out.println("loged in as CUSTOMER");
 			
@@ -41,13 +43,13 @@ public class CustomerTester implements CommandLineRunner {
 //PurchaseCoupon:
 //			PurchaseCoupon(customerServie);
 // getAllCustomerDetails:
-//			Customer c = getAllCustomerDetails(customerServie);
-//			System.out.println(c);
+			Customer c = getAllCustomerDetails(customerServie);
+			System.out.println(c);
 //			getAllCustomerDetails(customerServie);
 //getAllCustomerCoupons1:
 //          getAllCustomerCoupons(customerServie);
 //getCustomerCoupons2:
-				getCustomerCoupons(customerServie);
+//				getCustomerCoupons(customerServie);
 //not working getCustomerCouponsByPrice
 //			getCustomerCouponsByPrice(customerServie);
 

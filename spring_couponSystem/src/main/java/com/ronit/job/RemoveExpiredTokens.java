@@ -15,7 +15,7 @@ import com.ronit.entities.TokenInfo;
 import com.ronit.utils.TokenManager;
 //import com.ronit.utils.TokenManager.Token;
 
-@Component
+//@Component
 public class RemoveExpiredTokens {
 
 	@Autowired

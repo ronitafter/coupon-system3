@@ -23,6 +23,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ronit.enums.Category;
 
 @Entity
@@ -53,6 +54,7 @@ public class Coupon {
 	private int amount;
 	private double price;
 	private String image;
+	
 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH
 			,CascadeType.PERSIST}, fetch = FetchType.LAZY)
 	@JoinTable(name = "coupons_customers", 
