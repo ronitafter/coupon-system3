@@ -3,11 +3,17 @@ package com.ronit.test;
 import java.sql.Date;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.ronit.exceptions.CouponSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -15,21 +21,28 @@ import org.springframework.web.client.RestTemplate;
 import com.ronit.controllers.AdminController;
 import com.ronit.entities.Company;
 import com.ronit.entities.Coupon;
+import com.ronit.entities.Customer;
+import com.ronit.entities.LoginRequest;
 import com.ronit.entities.ResponseDto;
 import com.ronit.enums.Category;
 import com.ronit.services.AdminService;
 //import com.sapir.beans.CustomerList;
 
-@Component
-public class AdminControllerTester implements CommandLineRunner {
+//@Component
+public class CustomerControllerTester implements CommandLineRunner {
 // __________________________ TESTER __________________________________________
 //	public static void main(String[] args) throws URISyntaxException {
 
 
 	@Override
 	public void run(String... args) throws Exception {
-//		startCompanyTester();
-	
+		String token = doLogin();
+
+		doPurchase(token);
+		
+		// like this:
+//		doCouponGet(token);
+//		doCouponDelete(token)
 	}
 	
 	@Autowired
@@ -39,84 +52,59 @@ public class AdminControllerTester implements CommandLineRunner {
 	private AdminService adminService;
 	
 	public void startCompanyTester() throws CouponSystemException {
-		addOneCompany();
+//		addOneCompany();
 		
 	}
 
-	public void addOneCompany()  {
-//
-//********************** ADD Company ********************************
-		Company company = createCompanyWithCoupons();
+//	public void addOneCompany()  {
+////
+////********************** ADD Company ********************************
 
-		// with coupons - does not work - need to fix it!!
-		//Company company = createCompanyWithCoupons();
+	public void doPurchase(String token) {
+		//purchase
 
-		System.out.println(company);
-		try {
-			adminService.addCompany(company);
-		} catch (CouponSystemException e) {
-			e.printStackTrace();
-		}
+				// create headers
+				
+				HttpHeaders headers = new HttpHeaders();
+				// set `content-type` header
+				headers.setContentType(MediaType.APPLICATION_JSON);
+				// set `accept` header
+				headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+				headers.add("authorization", token);
+				HttpEntity<String> entity = new HttpEntity<>("9", headers);
+				ResponseEntity<ResponseDto> response2 = restTemplate.postForEntity
+						(String.format("http://localhost:8080/customer/purchase"),
+								entity, ResponseDto.class);
+				ResponseDto dto;
+				if(response2.getStatusCode().equals(HttpStatus.CREATED) ) {
+					System.out.println("purchased coupon");
+					dto = response2.getBody();
+					if(dto.isSuccess()) {
+						System.out.println("true");
+					}
+				}
 	}
 	
-
-
-	private Company createCompanyWithoutCoupons() {
-		List<Coupon> coupons = new ArrayList<Coupon>();
-		Company company = new Company("vvvvv", "vvvvv", "vvvvv123", coupons);
-		return company;
+	public String doLogin() {
+		//login
+				LoginRequest loginRequest = new LoginRequest("bbb@", "bbb123");
+				ResponseEntity<String> response = restTemplate.postForEntity
+						(String.format("http://localhost:8080/customer/login"),
+								loginRequest, 
+								String.class);
+				String token = "";
+				if(response.getStatusCode().equals(HttpStatus.OK) ) {
+					System.out.println("logged in as customer");
+					token = response.getBody();
+				}
+				
+				return token;
 	}
-
-	private Company createCompanyWithCoupons() {
-		List<Coupon> coupons = new ArrayList<Coupon>();
-		coupons.add(new Coupon(Category.FOOD, "zdzdzdz", "dzdzdz", Date.valueOf("2021-12-18"),
-				Date.valueOf("2021-12-19"), 5, 100.00, "image5"));//
-		Company company = new Company("testng", "testing@", "testing123", coupons);
-		return company;
-	}
-
-	public void testApi() {
-		
-		
-		
-//		
-//********************** ADD Company ********************************
-			List<Coupon> coupons = new ArrayList<Coupon>();
-			coupons.add(new Coupon(Category.FOOD, "title5", "description5", Date.valueOf("2021-12-18"),
-					Date.valueOf("2021-12-19"), 5, 100.00, "image5"));//			
-			Company company = new Company("gfgfgf", "gfgfg@","gfgfgf", coupons);
-			System.out.println(company);
-//		ResponseEntity<ResponseDto> response = restTemplate.postForEntity(String.format("http://localhost:8080/admin/company"), company,ResponseDto.class);
-//		System.out.println("response statuse: " + response.getStatusCodeValue() );
-//		System.out.println("response body: " + response.getBody());
-		ResponseEntity<Company> response = restTemplate.postForEntity(String.format("http://localhost:8080/admin/company"), company,Company.class);
-		System.out.println("response statuse: " + response.getStatusCodeValue() );
-		System.out.println("response body: " + response.getBody());
-		//System.out.println(company);
-			
-			
-			
-//			adminService.addCompany(b);
-//			System.out.println("company added");
-//			System.out.println(b);
-//		}
-
-//********************** GET CUSTOMER BY ID ********************************
-//		resttemplate = new RestTemplate();
-//		Customer customer = resttemplate.getForObject("http://localhost:8080/customer/1", Customer.class);
-//		System.out.println(customer);
-
-// ********************** GET CUSTOMERS BY NAME **********************
-//				
-//Customer customer = restTemplate.getForObject("http://localhost:8080/customer/ByFirstName?firstName=Rona", Customer.class);
-//	customer);
-//	CustomerList customers = restTemplate.getForObject("http://localhost:8080/customer/ByFirstName?firstName=Rona", CustomerList.class);	
-//	System.out.println(String.format("received customers: %s", customers.getCustomers()));
-//	System.out.println(customers.getCustomers());
-//	customers.getCustomers().forEach(customer ->System.out.println (customer));
-
-//	
-	}
+	
+ 	
+ 	
+ 	
+ 	
 //********************** updateCompany ********************************
 		static void updateCompany(AdminService adminService) throws CouponSystemException {
 			Company company = new Company(4, "Compan4", "Compan4@mail", "CompanY1123");

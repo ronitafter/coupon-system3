@@ -53,15 +53,11 @@ public class CustomerController extends ClientController {
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
-//	public ResponseEntity<String> login(@RequestBody String email)
-	//tokens...
 			throws AuthorizationException, CouponSystemException {
-		// return adminService.login(loggedin.getEmail(), loggedin.getPassword());
-//		return loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);
+		System.out.println("customer login");
 		try {
 			ClientService clientService = loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.CUSTOMER);		//1- try to login
 			customerservice = (CustomerService) clientService;
-//			String token = removeExpiredTokens.getNewToken();
 			String token = tokenManager.generateToken(ClientType.CUSTOMER);
 
 			return new ResponseEntity<String>(token, HttpStatus.OK);
@@ -69,34 +65,14 @@ public class CustomerController extends ClientController {
 			
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
-		
 
 		} catch (Exception e) {
-			// else -> return failure string "Fail to login"
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
 
 	}
-//	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
-//			throws AuthorizationException, CouponSystemException {
-//		// return adminService.login(loggedin.getEmail(), loggedin.getPassword());
-////		return loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);		//1- try to login
-//		try {
-//			loginRequest.getClientType();
-//			customerservice = (CustomerService) loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(),
-//					ClientType.CUSTOMER);
-//			String token = removeExpiredTokens.getNewToken();
-//			return new ResponseEntity<String>(token, HttpStatus.OK);
-//		} catch (Exception e) {
-//			// else -> return failure string "Fail to login"
-//			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//		}
-//		// if login succeed -> return TOKEN
-//		// generate token here!
-//		// TokenManager.getNewToken()
-//
-//	}
+
 
 	@GetMapping("/logout")
 	public void logout(@RequestHeader("authorization") String token) {
@@ -105,26 +81,21 @@ public class CustomerController extends ClientController {
 	
 	@PostMapping("/purchase")
 //	@GetMapping("/coupon")
-	//void
-	public  ResponseEntity<?> PurchaseCoupon(@RequestBody int couponId) throws AuthorizationException, CouponSystemException {
+	public  ResponseEntity<?> PurchaseCoupon(@RequestBody int couponId) throws AuthorizationException,
+	CouponSystemException {
 		if (true){//tokenManager.isTokenExists(token)) {
-//			List<Customer> customers  = adminService.getAllCustomers();
 				customerservice.PurchaseCoupon(couponId);			
 				ResponseDto responsdto = new ResponseDto(true, "Purchased Coupon");
 				return new ResponseEntity<>(responsdto, HttpStatus.CREATED);
-//		return adminService.getAllCustomers();
-			//return new customerList(customers)		
 		}
 		throw new AuthorizationException("Purchase not authorized");		
-//			ResponseDto responsdto = new ResponseDto(false, e.getMessage());
-//			return new ResponseEntity<>(responsdto, HttpStatus.BAD_REQUEST);
 //			
 		}
 	
 	@GetMapping("/coupon")
 	public List<Coupon> getAllCustomerCoupons()
 			throws CouponSystemException, AuthorizationException {
-		if (true){//tokenManager.isTokenExists(token)) {
+		if (true){
 			return customerservice.getAllCustomerCoupons();
 		} else {
 			throw new AuthorizationException("company not authorized");
@@ -134,15 +105,15 @@ public class CustomerController extends ClientController {
 	}
 	@GetMapping("/coupon/category")
 //	@GetMapping("/customerCouponsByCategory")
-	public List<Coupon> getCustomerCoupons(//@RequestHeader("authorization")String token,
-										   @RequestParam("customerId") int customerId, @RequestParam("category") int category) throws CouponSystemException, AuthorizationException {
+	public List<Coupon> getCustomerCoupons(@RequestParam("customerId") int customerId, @RequestParam("category") int category) throws CouponSystemException, AuthorizationException {
 		if (true){//tokenManager.isTokenExists(token)) {
 		return customerservice.getCustomerCoupons(customerId, category);
 	}
 	
 		throw new AuthorizationException("Purchase not authorized");	
 	}
-	@GetMapping("/coupon/{maxPrice}")
+//	@GetMapping("/coupon/{maxPrice}")
+	@GetMapping("/price")
 	public List<Coupon> getCustomerCouponsByPrice(
 												  @RequestParam("customerId") int customerId, @RequestParam("maxPrice") double maxPrice) throws CouponSystemException, AuthorizationException {
 		if (true){//tokenManager.isTokenExists(token)) {
@@ -153,13 +124,13 @@ public class CustomerController extends ClientController {
 
 	}
 	
-	@GetMapping("/customerDetails")
-	public Customer getAllCustomerDetails(@PathVariable("id") int customerId) throws CouponSystemException, AuthorizationException {
-		if (true){//tokenManager.isTokenExists(token)) {
+	@GetMapping("/details/{customerId}")
+	//	@GetMapping("/customerDetails")
+//	public Customer getAllCustomerDetails(@PathVariable("id") int customerId) throws CouponSystemException, AuthorizationException {
+	public Customer getAllCustomerDetails(@PathVariable int customerId) throws CouponSystemException, AuthorizationException {
 		return customerservice.getAllCustomerDetails(customerId);
-}
-		throw new AuthorizationException("Purchase not authorized");	
 
 }
 }
+
 

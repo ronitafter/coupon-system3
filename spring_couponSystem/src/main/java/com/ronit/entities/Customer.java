@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -35,6 +36,7 @@ public class Customer {
 	@JoinTable(name = "coupons_customers", 
 			joinColumns = @JoinColumn(name = "customer_id"), 
 			inverseJoinColumns = @JoinColumn(name = "coupon_id"))
+	 @JsonIgnore
 	private List<Coupon> coupons;
 
 	public Customer() {

@@ -17,10 +17,10 @@ import org.springframework.http.HttpStatus;
 
 import com.ronit.enums.ClientType;
 import com.ronit.utils.TokenManager;
-//
-//@WebFilter({"/admin/customer/*", "/admin/company/*", "/admin/companies/*",
-//	"/admin/customers/*","/admin/coupons/*",
-//	})
+
+@WebFilter({"/admin/customer/*", "/admin/company/*", "/admin/companies/*",
+	"/admin/customers/*","/admin/coupons/*",
+	})
 public class AdminAuthorizationFilter implements Filter{
 	
 	@Autowired

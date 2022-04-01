@@ -24,13 +24,6 @@ import com.ronit.repositories.CustomerRepository;
 
 import jdk.jfr.DataAmount;
 
-/*
- * @Transactional(rollbackFor):
- * the metadata that specifies the semantics of the transactions on a method. 
- * 
- * 
- */
-
 @Service
 @Scope("prototype")
 @Transactional(rollbackFor = CouponSystemException.class)

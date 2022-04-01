@@ -16,9 +16,10 @@ import org.springframework.http.HttpStatus;
 
 import com.ronit.enums.ClientType;
 import com.ronit.utils.TokenManager;
-//
-//@WebFilter({"/customer/*",
-//	})
+
+@WebFilter({"/customer/purchase/*", "/customer/coupon/*","/customer/coupon/category/*",
+	"/customer/details/*",
+	})
 public class CustomerAuthorizationFilter implements Filter{
 	
 	@Autowired

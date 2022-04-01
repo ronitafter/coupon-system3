@@ -32,8 +32,6 @@ public class AdminService extends ClientService {
 	}
 	
 
-	
-
 // ************************************ COMPANY *****************************************************************
 // ___________________________________ Add Company _____________________________________________________________
 	public Company addCompany(Company company) throws CouponSystemException {
@@ -52,7 +50,6 @@ public class AdminService extends ClientService {
 	public void updateCompany(Company company) throws CouponSystemException {
 		Optional<Company> opt = this.companyRepository.findById(company.getId());
 		if (companyRepository.existsByNameAndEmail(company.getName(), company.getEmail())) {
-			// ompanyrepository.ExistsByNameOrEmail(company.getName(), company.getEmail()))
 			throw new CouponSystemException("addCompany faild - company with this name and email already exist ");
 		}
 		if (opt.isPresent()) {
@@ -73,10 +70,8 @@ public class AdminService extends ClientService {
 		if (opt.isEmpty()) {
 			throw new CouponSystemException("deleteCompany faild - Company with this id not found");
 		}
-//		Company CompanyFromDb = opt.get();
 		opt.get();
 		companyRepository.deleteById(companyID);
-//		companyrepository.delete(CompanyFromDb);
 
 	}
 

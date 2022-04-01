@@ -17,9 +17,10 @@ import org.springframework.http.HttpStatus;
 import com.ronit.enums.ClientType;
 import com.ronit.utils.TokenManager;
 
-//@WebFilter({"/company/*"
-//	
-//})
+@WebFilter({"/company/coupon/*", "/company/details/*", "/company/id*",
+	"/company/company/*", 
+	
+})
 public class CompanyAuthorizationFilter implements Filter{
 	
 	@Autowired

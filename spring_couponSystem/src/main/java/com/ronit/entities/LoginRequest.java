@@ -21,7 +21,7 @@ import lombok.ToString;
 public class LoginRequest {
 //
 //	private int id;
-//	private ClientType clientType;
+    private ClientType clientType;
 	private String email;
 	private String password;
 	
@@ -30,7 +30,7 @@ public class LoginRequest {
 	
 	public LoginRequest(String email, String password) {
 //		this.id = id;
-//		this.clientType = clientType;
+		this.clientType = clientType;
 		this.email = email;
 		this.password = password;
 	}

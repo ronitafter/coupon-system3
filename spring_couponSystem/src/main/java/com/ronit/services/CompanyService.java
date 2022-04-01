@@ -25,8 +25,6 @@ import com.ronit.repositories.CompanyRepository;
 @Transactional(rollbackFor = CouponSystemException.class)
 public class CompanyService extends ClientService {
 
-	
-	
 	@Autowired
 	private CompanyRepository companyrepository;
 

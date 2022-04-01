@@ -25,6 +25,9 @@ public class TokenManager {
 
 //	-------------
 	private Map<String, TokenInfo> tokens;
+	public TokenInfo getInfoForToken(String token) {
+		return tokens.get(token);
+	}
 	
 	   public boolean isAuthorizedFor(String token, ClientType clientType)  {
 		   TokenInfo tokenInfo = tokens.get(token);
@@ -48,12 +51,9 @@ public class TokenManager {
 	
 	public String generateToken(ClientType type) {
 		TokenInfo info = TokenInfo.generate(type);
-//		tokens2.put(info.getToken(), info);
-//		return info.getToken();	
-		String x = Double.toString(Math.random());
-		tokens.put(x, info);
-//		tokens.put(x, new TokenInfo());
-		return x;
+			
+		tokens.put(info.getToken(), info);
+		return info.getToken();
 
 	}
 	

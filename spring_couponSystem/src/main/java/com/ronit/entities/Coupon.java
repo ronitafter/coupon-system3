@@ -60,6 +60,7 @@ public class Coupon {
 	@JoinTable(name = "coupons_customers", 
 			joinColumns = @JoinColumn(name = "coupon_id"), 
 			inverseJoinColumns = @JoinColumn(name = "customer_id")) 
+	
 	private List<Customer> customers;
 	
 	public Coupon() {

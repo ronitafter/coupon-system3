@@ -1,5 +1,6 @@
 package com.ronit.controllers;
 
+import com.ronit.entities.TokenInfo;
 import java.util.List;
 
 
@@ -58,23 +59,18 @@ public class AdminController extends ClientController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
+	public ResponseEntity<TokenInfo> login(@RequestBody LoginRequest loginRequest)
 			throws AuthorizationException, CouponSystemException {
 		try {
 			ClientService clientService = loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);	
 			adminService = (AdminService) clientService;
-			//			loginRequest.getClientType();
-//			adminService = (AdminService) loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(),
-//					ClientType.ADMINISTRATOR);
-//			String token = removeExpiredTokens.getNewToken();
 			String token = tokenManager.generateToken(ClientType.ADMINISTRATOR);
-			return new ResponseEntity<String>(token, HttpStatus.OK);
+			return new ResponseEntity<TokenInfo>(tokenManager.getInfoForToken(token), HttpStatus.OK);
 		} catch (CouponSystemException e) {		
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<TokenInfo>(HttpStatus.BAD_REQUEST);
 
 		} catch (Exception e) {
-			// else -> return failure string "Fail to login"
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<TokenInfo>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
@@ -102,14 +98,6 @@ public class AdminController extends ClientController {
 // ************************************ COMPANY *****************************************************************
 
 // ___________________________________ Add Company _____________________________________________________________
-
-	 /**
-     * add a company to the system
-     * @param token for validation
-     * @param company
-     * @return ResponseEntity
-     * @throws CouponSystemException
-     */
 	
 //add company - Company company
 	@PostMapping("/company")
@@ -119,15 +107,9 @@ public class AdminController extends ClientController {
 		
 		try {
 			Company addedCompany = adminService.addCompany(company);
-//			adminService.save(company).getId();
-			//ResponseDto responsdto = new ResponseDto(true, "company added");
-			//return new ResponseEntity<ResponseDto>(responsdto, HttpStatus.CREATED);
 			return new ResponseEntity<Company>(addedCompany, HttpStatus.CREATED);
 
-			// catch (InvalidOperationException e) {
 		} catch (Exception e) {
-			//ResponseDto responsdto = new ResponseDto(false, e.getMessage());
-			//return new ResponseEntity<>(responsdto, HttpStatus.BAD_REQUEST);
 			return null;
 		}
 
@@ -140,9 +122,6 @@ public class AdminController extends ClientController {
 //		return ResponseEntity.ok(company);
 		return ResponseEntity.ok(company);
 
-//		ResponseDto responseDto = new ResponseDto(true, "updated Company successfully");
-//		return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
-
 	}
 	
 // ___________________________________ Update Customer ____________________________________________________________
@@ -152,9 +131,6 @@ public class AdminController extends ClientController {
 		return ResponseEntity.ok(customer);
 	}
 	
-	
-	
-
 // ___________________________________ Delete Company ____________________________________________________________
 	@DeleteMapping("/company/{id}")
 	public ResponseEntity<?> deleteCompany(@PathVariable("id") int id)
@@ -162,7 +138,6 @@ public class AdminController extends ClientController {
 
 		try {
 			adminService.deleteCompany(id);
-//			return ResponseEntity.ok().build();
 			return new ResponseEntity<>("company deleted", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("company not found", HttpStatus.NOT_FOUND);
@@ -173,7 +148,6 @@ public class AdminController extends ClientController {
 	@GetMapping("/companies")
 	public List<Company> getAllCompanies(){
 		return adminService.getAllCompanies();
-//			return new CustomerList(storeService.getAllCustomers());
 
 	}
 
@@ -198,37 +172,14 @@ throws InvalidOperationException, CouponSystemException {
 
 try {
 	Customer addedCustomer = adminService.addCustomer(customer);
-//adminService.save(company).getId();
-//ResponseDto responsdto = new ResponseDto(true, "company added");
-//return new ResponseEntity<ResponseDto>(responsdto, HttpStatus.CREATED);
 return new ResponseEntity<Customer>(addedCustomer, HttpStatus.CREATED);
-
-// catch (InvalidOperationException e) {
 } catch (Exception e) {
-//ResponseDto responsdto = new ResponseDto(false, e.getMessage());
-//return new ResponseEntity<>(responsdto, HttpStatus.BAD_REQUEST);
 return null;
 }
 	}
-
-// public Long addCustomer(@RequestBody Customer customer) {
-//	public ResponseEntity<?> addCustomer(//@RequestHeader("authorization") String token,
-//										 @RequestBody Customer customer) {
-//		try {
-//			adminService.addCustomer(customer);
-//			return new ResponseEntity<>(HttpStatus.CREATED);
-//
-//		} catch (CouponSystemException e) {
-//			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//
-//		}
-//	}
-
-
 // ___________________________________ Delete Customer ____________________________________________________________
 	@DeleteMapping("/customer/{customerId}")
-	public ResponseEntity<?> deleteCustomer(//@RequestHeader("authorization") String token,
-			@PathVariable int customerId) {
+	public ResponseEntity<?> deleteCustomer(@PathVariable int customerId) {
 		try {
 			adminService.deleteCustomer(customerId);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -239,14 +190,10 @@ return null;
 
 // ___________________________________ getAllCustomers ____________________________________________________________
 	@GetMapping("/customers")
-	// public List<Customer> getAllCustomers() {
-	public List<Customer> getAllCustomers(//@RequestHeader("authorization") String token
-											) throws AuthorizationException {
-		if (true){//tokenManager.isTokenExists(token)) {
+	public List<Customer> getAllCustomers() throws AuthorizationException {
+		if (true){
 			List<Customer> customers = adminService.getAllCustomers();
-//		return adminServic e.getAllCustomers();
 			return customers;
-			// return new customerList(customers)
 		}
 
 		throw new AuthorizationException("user not authorized");
@@ -255,8 +202,8 @@ return null;
 
 // ___________________________________ getAllCustomers ____________________________________________________________
 		@GetMapping("/coupons")
-		public List<Coupon> getAllCoupons(//@RequestHeader("authorization") String token
-												) throws AuthorizationException {
+		public List<Coupon> getAllCoupons() throws AuthorizationException {
+			System.out.println("getAllCoupons");
 			if (true){
 				List<Coupon> coupons = adminService.getAllCoupons();
 				return coupons;
@@ -267,7 +214,6 @@ return null;
 		
 // ___________________________________ Get One Customer ___________________________________________________________
 	@GetMapping("/customer/{id}")
-	//	public ResponseEntity<?> getOneCustomer(@RequestHeader("authorization") String token,
 	public ResponseEntity<?> getOneCustomer(@PathVariable("id") Integer id) throws CouponSystemException {
 		try {
 			Customer customer = adminService.getOneCustomer(id);
