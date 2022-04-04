@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ronit.exceptions.CouponSystemException;
+import com.ronit.login.LoginRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -17,18 +20,17 @@ import com.ronit.entities.Company;
 import com.ronit.entities.Coupon;
 import com.ronit.entities.ResponseDto;
 import com.ronit.enums.Category;
+import com.ronit.enums.ClientType;
 import com.ronit.services.AdminService;
 //import com.sapir.beans.CustomerList;
 
-@Component
+//@Component
 public class AdminControllerTester implements CommandLineRunner {
 // __________________________ TESTER __________________________________________
-//	public static void main(String[] args) throws URISyntaxException {
-
 
 	@Override
 	public void run(String... args) throws Exception {
-//		startCompanyTester();
+		startCompanyTester();
 	
 	}
 	
@@ -39,7 +41,7 @@ public class AdminControllerTester implements CommandLineRunner {
 	private AdminService adminService;
 	
 	public void startCompanyTester() throws CouponSystemException {
-		addOneCompany();
+		doLogin();
 		
 	}
 
@@ -47,9 +49,6 @@ public class AdminControllerTester implements CommandLineRunner {
 //
 //********************** ADD Company ********************************
 		Company company = createCompanyWithCoupons();
-
-		// with coupons - does not work - need to fix it!!
-		//Company company = createCompanyWithCoupons();
 
 		System.out.println(company);
 		try {
@@ -59,7 +58,23 @@ public class AdminControllerTester implements CommandLineRunner {
 		}
 	}
 	
-
+	public String doLogin() {
+		//login
+				LoginRequest loginRequest = new LoginRequest("admin@admin.com", "admin", ClientType.ADMINISTRATOR);
+				ResponseEntity<String> response = restTemplate.postForEntity
+						(String.format("http://localhost:8080/login"),
+								loginRequest, 
+								String.class);
+				String token = "";
+				if(response.getStatusCode().equals(HttpStatus.OK) ) {
+					System.out.println("logged in as admin");
+					token = response.getBody();
+				}
+				
+				return token;
+	}
+	
+	
 
 	private Company createCompanyWithoutCoupons() {
 		List<Coupon> coupons = new ArrayList<Coupon>();
@@ -151,17 +166,7 @@ public class AdminControllerTester implements CommandLineRunner {
 //	CustomersList customers = restTemplate.getForObject("http://localhost:8080/customer/ByFirstName?firstName=ranDanker", CustomersList.class);	
 //	System.out.println(String.format("received customers: %s", customers.getCustomers()));
 //    customers.getCustomers().forEach(customer -> System.out.println(customer));
-//********************** ADD ORDER ********************************
-		
-//		?????
-		
-//********************** UPDATE ORDER ********************************
 
-//????
-				
-// ********************** getAllUsersByAgeAndName **********************
-
-//???
 //********************** getAllCustomerByAge **********************
 		// NOT WORKING
 //	CustomerList customers = resttemplate.getForObject("http://localhost:8080/customer/ByAge?age=25", CustomerList.class);

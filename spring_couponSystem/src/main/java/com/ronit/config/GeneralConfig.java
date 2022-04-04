@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.ronit.entities.TokenInfo;
+import com.ronit.login.TokenInfo;
 
 //@Configuration
 //public class GeneralConfig {

@@ -15,10 +15,10 @@ import com.ronit.entities.Customer;
 import com.ronit.enums.Category;
 import com.ronit.enums.ClientType;
 import com.ronit.exceptions.CouponSystemException;
+import com.ronit.login.LoginManager;
 import com.ronit.services.CompanyService;
 import com.ronit.services.CustomerService;
 import com.ronit.utils.DateUtils;
-import com.ronit.utils.LoginManager;
 
 //@Order(3)
 //@Component
@@ -33,8 +33,7 @@ public class CustomerTester implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Date now = new Date(new java.util.Date().getTime());
-		Date inOneDay = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+		
 		startCustomerTester();
 	}
 
@@ -95,7 +94,7 @@ public class CustomerTester implements CommandLineRunner {
 	}
 
 	public List<Coupon> getAllCustomerCoupons(CustomerService customerServie) throws CouponSystemException {
-		for (Coupon coupon : customerServie.getAllCustomerCoupons()) {
+		for (Coupon coupon : customerServie.getAllCustomerCoupons(customerID)) {
 			 System.out.println(coupon);
 		}
 		return null;

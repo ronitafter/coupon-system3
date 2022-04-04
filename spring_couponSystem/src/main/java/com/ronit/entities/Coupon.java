@@ -40,8 +40,6 @@ public class Coupon {
 //	 @Column(name = "company_id")
 //	    private long companyId;
 
-	
-	
 	@Column(name = "category_id")
 	@Enumerated(value = EnumType.ORDINAL)
 	private Category category;

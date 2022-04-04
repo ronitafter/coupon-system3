@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.ronit.enums.ClientType;
-import com.ronit.utils.TokenManager;
+import com.ronit.login.TokenManager;
 
 @WebFilter({"/company/coupon/*", "/company/details/*", "/company/id*",
 	"/company/company/*", 

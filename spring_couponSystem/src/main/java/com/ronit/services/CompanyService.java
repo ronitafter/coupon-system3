@@ -29,6 +29,11 @@ public class CompanyService extends ClientService {
 	private CompanyRepository companyrepository;
 
 	private int companyId;
+	
+	public int getId() {
+		return companyId;
+	}
+	
 // -------------------------- login -----------------------------------------
 	public boolean login(String email, String passwaord) {
 

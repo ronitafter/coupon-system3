@@ -2,8 +2,7 @@ package com.ronit.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-import com.ronit.utils.LoginManager;
+import com.ronit.login.LoginManager;
 
 public class ClientController {
 

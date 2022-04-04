@@ -30,16 +30,15 @@ import jdk.jfr.DataAmount;
 public class CustomerService extends ClientService {
 
 	private int customerId;
-
-//	@Autowired
-//	private CustomerRepository customerRipository;
-//	@Autowired
-//	private CouponRepository couponRipository;
+	
+	public int getId() {
+		return customerId;
+	}
 // -------------------------- login -----------------------------------------
 	public boolean login(String email, String passwaord) {
 		if (customerRepository.existsByEmailAndPassword(email, passwaord)) {
 			Customer customer = customerRepository.findByEmailAndPassword(email, passwaord);
-			customerId = customer.getId();
+			this.customerId = customer.getId();
 			return true;
 		}
 
@@ -65,41 +64,32 @@ public class CustomerService extends ClientService {
 		if (coupon.getAmount() <= 0) {
 			throw new CouponSystemException("PurchaseCoupon faild - amount for this coupo is 0");
 		}
-		if (couponRepository.existsByIdAndCustomersId(couponId, customerId)) {
+		if (couponRepository.existsByIdAndCustomersId(couponId, 0)) {
 			throw new CouponSystemException("PurchaseCoupon faild - coupon exists for this CustomerId");
 		}
 
 		if (coupon.getEndDate().before(new Date())) {
 			throw new CouponSystemException("could not  Purchase coupon - coupon  is expired");
 		} else {
-			Customer customer = customerRepository.getById(customerId);
+			Customer customer = customerRepository.getById(0);
 			customer.addCoupon(coupon);
 			coupon.setAmount(coupon.getAmount() - 1);
 			System.out.println("coupon Purchased successfully");
-			System.out.println("coupon Id: " + couponId + " customer Id: " + customerId);
+			System.out.println("coupon Id: " + couponId + " customer Id: " + 0);
 
 		}
 
 	}
 
 // -------------------------- getAllCustomerCoupons -----------------------------------------
+
 	public List<Coupon> getAllCustomerCoupons(int customerId) throws CouponSystemException {
-		if (couponRepository.findByCustomersId(customerId).isEmpty()) {
+		var result = couponRepository.findByCustomersId(customerId);
+		if (result.isEmpty()) {
 			throw new CouponSystemException(
 					"getAllCustomerCoupons faild - Coupons not found in this category for this customer");
 		} else {
-			return new ArrayList<Coupon>(couponRepository.findByCustomersId(customerId));
-
-		}
-
-	}
-
-	public List<Coupon> getAllCustomerCoupons() throws CouponSystemException {
-		if (couponRepository.findByCustomersId(customerId).isEmpty()) {
-			throw new CouponSystemException(
-					"getAllCustomerCoupons faild - Coupons not found in this category for this customer");
-		} else {
-			return new ArrayList<Coupon>(couponRepository.findByCustomersId(customerId));
+			return new ArrayList<Coupon>(result);
 
 		}
 
@@ -107,13 +97,14 @@ public class CustomerService extends ClientService {
 
 // -------------------------- getCustomerCoupons -----------------------------------------
 	public List<Coupon> getCustomerCoupons(int customerId, int category) throws CouponSystemException {
-		if (couponRepository.findByCustomerIdAndCategory(customerId, category).isEmpty()) {
+		var result = couponRepository.findByCustomerIdAndCategory(customerId, category);
+		if (result.isEmpty()) {
 			throw new CouponSystemException(
 					"getCustomerCoupons faild - Coupons not found in this category for this customer");
-		} else {
+		} 
 
-			return new ArrayList<Coupon>(couponRepository.findByCustomerIdAndCategory(customerId, category));
-		}
+			return new ArrayList<Coupon>(result);
+		
 
 	}
 

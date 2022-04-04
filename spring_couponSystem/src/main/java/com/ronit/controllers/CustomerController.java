@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ronit.entities.Coupon;
 import com.ronit.entities.Customer;
-import com.ronit.entities.LoginRequest;
 import com.ronit.entities.ResponseDto;
 import com.ronit.enums.ClientType;
 import com.ronit.exceptions.AuthorizationException;
 import com.ronit.exceptions.CouponSystemException;
 import com.ronit.job.RemoveExpiredTokens;
+import com.ronit.login.LoginManager;
+import com.ronit.login.LoginRequest;
+import com.ronit.login.TokenManager;
 import com.ronit.services.ClientService;
 import com.ronit.services.CompanyService;
 import com.ronit.services.CustomerService;
-import com.ronit.utils.LoginManager;
-import com.ronit.utils.TokenManager;
 
 @RestController
 @RequestMapping("/customer")
@@ -49,30 +49,6 @@ public class CustomerController extends ClientController {
 		this.customerservice = customerService;
 	}
 	
-	
-
-	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
-			throws AuthorizationException, CouponSystemException {
-		System.out.println("customer login");
-		try {
-			ClientService clientService = loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.CUSTOMER);		//1- try to login
-			customerservice = (CustomerService) clientService;
-			String token = tokenManager.generateToken(ClientType.CUSTOMER);
-
-			return new ResponseEntity<String>(token, HttpStatus.OK);
-		} catch (CouponSystemException e) {
-			
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-
-
-		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-
-
-	}
-
 
 	@GetMapping("/logout")
 	public void logout(@RequestHeader("authorization") String token) {
@@ -80,53 +56,32 @@ public class CustomerController extends ClientController {
 	}
 	
 	@PostMapping("/purchase")
-//	@GetMapping("/coupon")
 	public  ResponseEntity<?> PurchaseCoupon(@RequestBody int couponId) throws AuthorizationException,
 	CouponSystemException {
-		if (true){//tokenManager.isTokenExists(token)) {
 				customerservice.PurchaseCoupon(couponId);			
 				ResponseDto responsdto = new ResponseDto(true, "Purchased Coupon");
-				return new ResponseEntity<>(responsdto, HttpStatus.CREATED);
+				return new ResponseEntity<>(responsdto, HttpStatus.CREATED);		
 		}
-		throw new AuthorizationException("Purchase not authorized");		
-//			
-		}
-	
 	@GetMapping("/coupon")
-	public List<Coupon> getAllCustomerCoupons()
-			throws CouponSystemException, AuthorizationException {
-		if (true){
-			return customerservice.getAllCustomerCoupons();
-		} else {
-			throw new AuthorizationException("company not authorized");
-
+	public List<Coupon> getAllCustomerCoupons(@RequestHeader("authorization") String token)
+			throws CouponSystemException, AuthorizationException {	
+			var tokenInfo = tokenManager.getInfoForToken(token);
+			return customerservice.getAllCustomerCoupons(tokenInfo.getId());
 		}
 
-	}
 	@GetMapping("/coupon/category")
-//	@GetMapping("/customerCouponsByCategory")
 	public List<Coupon> getCustomerCoupons(@RequestParam("customerId") int customerId, @RequestParam("category") int category) throws CouponSystemException, AuthorizationException {
-		if (true){//tokenManager.isTokenExists(token)) {
 		return customerservice.getCustomerCoupons(customerId, category);
 	}
 	
-		throw new AuthorizationException("Purchase not authorized");	
-	}
-//	@GetMapping("/coupon/{maxPrice}")
 	@GetMapping("/price")
-	public List<Coupon> getCustomerCouponsByPrice(
-												  @RequestParam("customerId") int customerId, @RequestParam("maxPrice") double maxPrice) throws CouponSystemException, AuthorizationException {
-		if (true){//tokenManager.isTokenExists(token)) {
-			return customerservice.getCustomerCouponsByPrice(customerId, maxPrice);
-		}
-		
-		throw new AuthorizationException("Purchase not authorized");	
-
-	}
-	
+	public List<Coupon> getCustomerCouponsByPrice(@RequestHeader("authorization") String token, 
+			@RequestParam("maxPrice") double maxPrice)
+					throws CouponSystemException, AuthorizationException {
+		var tokenInfo = tokenManager.getInfoForToken(token);
+			return customerservice.getCustomerCouponsByPrice(tokenInfo.getId(), maxPrice);
+		}	
 	@GetMapping("/details/{customerId}")
-	//	@GetMapping("/customerDetails")
-//	public Customer getAllCustomerDetails(@PathVariable("id") int customerId) throws CouponSystemException, AuthorizationException {
 	public Customer getAllCustomerDetails(@PathVariable int customerId) throws CouponSystemException, AuthorizationException {
 		return customerservice.getAllCustomerDetails(customerId);
 

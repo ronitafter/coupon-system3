@@ -13,8 +13,8 @@ import com.ronit.entities.Coupon;
 import com.ronit.enums.Category;
 import com.ronit.enums.ClientType;
 import com.ronit.exceptions.CouponSystemException;
+import com.ronit.login.LoginManager;
 import com.ronit.services.CompanyService;
-import com.ronit.utils.LoginManager;
 
 //@Component
 public class CompanyTester implements CommandLineRunner {

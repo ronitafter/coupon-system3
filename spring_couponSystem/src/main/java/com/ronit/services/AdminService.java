@@ -22,6 +22,10 @@ public class AdminService extends ClientService {
 	private  String email1 = "admin@admin.com";
 	@Value("${admin.password}")
 	private  String password1 = "admin";
+	
+	public int getId() {
+		return 0;
+	}
 
 	public boolean login(String email, String passwaord) {
 		System.out.println("test5...");

@@ -16,5 +16,7 @@ public abstract class ClientService {
 	
 	public abstract boolean login(String email, String passwaord);
 	
+	public abstract int getId();
+	
 
 }

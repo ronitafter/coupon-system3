@@ -1,7 +1,7 @@
 package com.ronit.controllers;
 
-import com.ronit.entities.TokenInfo;
 import java.util.List;
+
 
 
 
@@ -24,18 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ronit.entities.Company;
 import com.ronit.entities.Coupon;
 import com.ronit.entities.Customer;
-import com.ronit.entities.LoginRequest;
 import com.ronit.entities.ResponseDto;
 import com.ronit.enums.ClientType;
 import com.ronit.exceptions.AuthorizationException;
 import com.ronit.exceptions.CouponSystemException;
 import com.ronit.exceptions.InvalidOperationException;
 import com.ronit.job.RemoveExpiredTokens;
+import com.ronit.login.LoginManager;
+import com.ronit.login.LoginRequest;
+import com.ronit.login.TokenInfo;
+import com.ronit.login.TokenManager;
 import com.ronit.services.AdminService;
 import com.ronit.services.ClientService;
 import com.ronit.services.CompanyService;
-import com.ronit.utils.LoginManager;
-import com.ronit.utils.TokenManager;
 
 @RestController
 @RequestMapping("/admin")
@@ -58,22 +59,6 @@ public class AdminController extends ClientController {
 
 	}
 
-	@PostMapping("/login")
-	public ResponseEntity<TokenInfo> login(@RequestBody LoginRequest loginRequest)
-			throws AuthorizationException, CouponSystemException {
-		try {
-			ClientService clientService = loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.ADMINISTRATOR);	
-			adminService = (AdminService) clientService;
-			String token = tokenManager.generateToken(ClientType.ADMINISTRATOR);
-			return new ResponseEntity<TokenInfo>(tokenManager.getInfoForToken(token), HttpStatus.OK);
-		} catch (CouponSystemException e) {		
-			return new ResponseEntity<TokenInfo>(HttpStatus.BAD_REQUEST);
-
-		} catch (Exception e) {
-			return new ResponseEntity<TokenInfo>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
 
 	@GetMapping("/test")
 	public void test() {
@@ -166,7 +151,7 @@ public class AdminController extends ClientController {
 
 // ___________________________________ Add Customer _____________________________________________________________
 	@PostMapping("/customer")
-	public ResponseEntity<Customer> addCustomer(//@RequestHeader("authorization") String token,
+	public ResponseEntity<Customer> addCustomer(
 			@RequestBody Customer customer)
 throws InvalidOperationException, CouponSystemException {
 
@@ -204,12 +189,9 @@ return null;
 		@GetMapping("/coupons")
 		public List<Coupon> getAllCoupons() throws AuthorizationException {
 			System.out.println("getAllCoupons");
-			if (true){
+		
 				List<Coupon> coupons = adminService.getAllCoupons();
 				return coupons;
-			}
-
-			throw new AuthorizationException("user not authorized");
 		}
 		
 // ___________________________________ Get One Customer ___________________________________________________________

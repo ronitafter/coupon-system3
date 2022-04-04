@@ -1,4 +1,4 @@
-package com.ronit.utils;
+package com.ronit.login;
 
 import java.sql.Date;
 
@@ -13,7 +13,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ronit.entities.TokenInfo;
 //import com.ronit.entities.TokenInfo;
 import com.ronit.enums.ClientType;
 
@@ -49,8 +48,8 @@ public class TokenManager {
 //		return false;
 	}
 	
-	public String generateToken(ClientType type) {
-		TokenInfo info = TokenInfo.generate(type);
+	public String generateToken(ClientType type, int id) {
+		TokenInfo info = TokenInfo.generate(type, id);
 			
 		tokens.put(info.getToken(), info);
 		return info.getToken();

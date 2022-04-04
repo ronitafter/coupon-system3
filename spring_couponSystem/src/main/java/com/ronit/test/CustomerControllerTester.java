@@ -2,12 +2,15 @@ package com.ronit.test;
 
 import java.sql.Date;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import com.ronit.exceptions.CouponSystemException;
+import com.ronit.login.LoginRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpEntity;
@@ -17,22 +20,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import com.ronit.controllers.AdminController;
 import com.ronit.entities.Company;
-import com.ronit.entities.Coupon;
-import com.ronit.entities.Customer;
-import com.ronit.entities.LoginRequest;
 import com.ronit.entities.ResponseDto;
-import com.ronit.enums.Category;
 import com.ronit.services.AdminService;
-//import com.sapir.beans.CustomerList;
 
 //@Component
 public class CustomerControllerTester implements CommandLineRunner {
-// __________________________ TESTER __________________________________________
-//	public static void main(String[] args) throws URISyntaxException {
-
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -87,7 +80,7 @@ public class CustomerControllerTester implements CommandLineRunner {
 	
 	public String doLogin() {
 		//login
-				LoginRequest loginRequest = new LoginRequest("bbb@", "bbb123");
+				LoginRequest loginRequest = new LoginRequest("bbb@", "bbb123", null);
 				ResponseEntity<String> response = restTemplate.postForEntity
 						(String.format("http://localhost:8080/customer/login"),
 								loginRequest, 
@@ -101,10 +94,6 @@ public class CustomerControllerTester implements CommandLineRunner {
 				return token;
 	}
 	
- 	
- 	
- 	
- 	
 //********************** updateCompany ********************************
 		static void updateCompany(AdminService adminService) throws CouponSystemException {
 			Company company = new Company(4, "Compan4", "Compan4@mail", "CompanY1123");

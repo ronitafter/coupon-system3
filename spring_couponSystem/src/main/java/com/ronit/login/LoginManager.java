@@ -1,4 +1,4 @@
-package com.ronit.utils;
+package com.ronit.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,53 +20,33 @@ import com.ronit.services.CustomerService;
 
 @Component
 public class LoginManager {
-	
+
 	@Autowired
 	TokenManager tokenManager;
 	private RemoveExpiredTokens removeExpiredTokens;
-
+		
 	@Autowired
 	private ApplicationContext context;
-//  clientService = applicationcontext.getBean(adminService.classe)
 
-	
-
-//	public String Login(String email, String passwaord, ClientType type ) throws AuthorizationException{
-//		if(email.equals("admin") && passwaord.equals("this.password")) {
-//			return tokenManager.generateToken(type);
-//			
-//		}
-//		throw new AuthorizationException("user not authorized to log in");				
-//	}
-//	
 	public void logout(String token) {
 		tokenManager.removeToken(token);
 	}
 	
 	public ClientService login(String email, String passwaord, ClientType clientType) throws CouponSystemException {
 		ClientService clientService = null;
-		System.out.println("test...");
 		switch (clientType) {
 		case COMPANY:
-			System.out.println("COMPANY...");
 			 clientService = context.getBean(CompanyService.class);
-//			 return tokenManager.generateToken(clientType);
-//			String token = tokenManager.generateToken(clientType);
-
 			 break;
 		case CUSTOMER:
 			clientService = context.getBean(CustomerService.class);
-
 			break;
 		case ADMINISTRATOR:
-			System.out.println("test2...");
 			clientService = context.getBean(AdminService.class);
-			System.out.println("test3...");
 			break;
 		}
 
 		if (clientService.login(email, passwaord)) {
-			System.out.println("clientService...");
 			return clientService;
 		} else {
 			throw new CouponSystemException("login failed");

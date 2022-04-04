@@ -24,17 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 //import com.ronit.beans.ResponseDto;
 import com.ronit.entities.Company;
 import com.ronit.entities.Coupon;
-import com.ronit.entities.LoginRequest;
 import com.ronit.enums.ClientType;
 import com.ronit.exceptions.AuthorizationException;
 import com.ronit.exceptions.CouponSystemException;
 import com.ronit.exceptions.InvalidOperationException;
 import com.ronit.job.RemoveExpiredTokens;
+import com.ronit.login.LoginManager;
+import com.ronit.login.LoginRequest;
+import com.ronit.login.TokenManager;
 import com.ronit.services.AdminService;
 import com.ronit.services.ClientService;
 import com.ronit.services.CompanyService;
-import com.ronit.utils.LoginManager;
-import com.ronit.utils.TokenManager;
 
 @RestController
 @RequestMapping("/company")
@@ -52,30 +52,6 @@ public class CompanyController extends ClientController {
 
 	private RemoveExpiredTokens removeExpiredTokens;
 
-
-	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
-			throws AuthorizationException, CouponSystemException {
-		System.out.println("company login");
-		try {
-			ClientService clientService = loginManager.login(loginRequest.getEmail(), loginRequest.getPassword(), ClientType.COMPANY);		//1- try to login
-			companyService = (CompanyService) clientService;
-//			String token = removeExpiredTokens.getNewToken();
-			String token = tokenManager.generateToken(ClientType.COMPANY);
-			
-			return new ResponseEntity<String>(token, HttpStatus.OK);
-		} catch (CouponSystemException e) {
-			
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			// else -> return failure string "Fail to login"
-			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	
-	}
-
-
-
 	@PostMapping("/coupon")
 	public ResponseEntity<?> addCoupon(@RequestBody Coupon coupon)
 			throws AuthorizationException {
@@ -87,7 +63,6 @@ public class CompanyController extends ClientController {
 		} catch (CouponSystemException e) {
 			ResponseDto responsdto = new ResponseDto(false, e.getMessage());
 			return new ResponseEntity<>(responsdto, HttpStatus.BAD_REQUEST);
-//			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
 	}
@@ -110,58 +85,34 @@ public class CompanyController extends ClientController {
 	@GetMapping("/coupon/category/{categoryId}")
 	public List<Coupon> getCompanyCoupons(@PathVariable int categoryId)
 			throws CouponSystemException, AuthorizationException {
-		if (true){
 		return companyService.getCompanyCoupons(categoryId);
-		}else {
-			throw new AuthorizationException("company not authorized");
-		}
 	}
 
 	@GetMapping("/coupon/{maxPrice}")
 	public List<Coupon> getCompanyCouponsByPrice(@PathVariable double maxPrice)
 			throws CouponSystemException, AuthorizationException {
-		if (true){
 			return companyService.getCompanyCouponsByPrice(maxPrice);
-		} else {
-			throw new AuthorizationException("company not authorized");
-
 		}
-	}
+	
 
 	@GetMapping("/company")
 	public List<Coupon> getAllCompanyCoupons()
 			throws CouponSystemException, AuthorizationException {
-		if (true){//tokenManager.isTokenExists(token)) {
 			return companyService.getAllCompanyCoupons();
-		} else {
-			throw new AuthorizationException("company not authorized");
-
 		}
 
-	}
+	
 
-	//@GetMapping("/myCompanyCoupons/{companyId}")
 	@GetMapping("/id")
 	public List<Coupon> getAllCompanyCoupons(@PathVariable int companyId)
 			throws CouponSystemException, AuthorizationException {
-		if (true){//tokenManager.isTokenExists(token)) {
 			return companyService.getMyCompanyCoupons(companyId);
-		} else {
-			throw new AuthorizationException("company not authorized");
-
-		}
-
 	}
 
 	@GetMapping("/details/{companyId}")
 	public Company getCompanyDetails(@PathVariable int companyId)
 			throws CouponSystemException, AuthorizationException {
 		System.out.println("getCompanyDetails");
-		if (true){
 			return companyService.getCompanyDetails(companyId);
-		} else {
-			throw new AuthorizationException("company not authorized");
-
-		}
 	}
 }
